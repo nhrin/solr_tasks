@@ -15,26 +15,24 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class ResolveUrlTokenFilter extends TokenFilter {
-    private final CharTermAttribute termAttribute =
-            addAttribute(CharTermAttribute.class);
-    private final Pattern patternToMatchShortenedUrls;
+    private final CharTermAttribute termAttribute = addAttribute(CharTermAttribute.class);
+    private static final Pattern patternToMatchShortenedUrls = Pattern.compile("https://bit.ly/\\w+");
     CloseableHttpClient client = HttpClientBuilder.create().disableRedirectHandling().build();
 
-    protected ResolveUrlTokenFilter(TokenStream input, Pattern patternToMatchShortenedUrls) {
+    protected ResolveUrlTokenFilter(TokenStream input) {
         super(input);
-        this.patternToMatchShortenedUrls = patternToMatchShortenedUrls;
     }
 
     @Override
     public boolean incrementToken() throws IOException {
-        if (!input.incrementToken())
+        if (!input.incrementToken()) {
             return false;
+        }
         char[] term = termAttribute.buffer();
         int len = termAttribute.length();
         String token = new String(term, 0, len);
         if (patternToMatchShortenedUrls.matcher(token).matches()) {
-            termAttribute.setEmpty().
-                    append(resolveShortenedUrl(token));
+            termAttribute.setEmpty().append(resolveShortenedUrl(token));
         }
         return true;
     }
