@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class ResolveUrlTokenFilter extends TokenFilter {
     private final CharTermAttribute termAttribute = addAttribute(CharTermAttribute.class);
-    private static final Pattern patternToMatchShortenedUrls = Pattern.compile("https://bit.ly/\\w+");
+    private static final Pattern PATTERN_TO_MATCH_SHORTENED_URLS = Pattern.compile("https://bit.ly/\\w+");
     CloseableHttpClient client = HttpClientBuilder.create().disableRedirectHandling().build();
 
     protected ResolveUrlTokenFilter(TokenStream input) {
@@ -31,7 +31,7 @@ public class ResolveUrlTokenFilter extends TokenFilter {
         char[] term = termAttribute.buffer();
         int len = termAttribute.length();
         String token = new String(term, 0, len);
-        if (patternToMatchShortenedUrls.matcher(token).matches()) {
+        if (PATTERN_TO_MATCH_SHORTENED_URLS.matcher(token).matches()) {
             termAttribute.setEmpty().append(resolveShortenedUrl(token));
         }
         return true;
