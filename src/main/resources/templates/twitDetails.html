@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h1>Details:</h1>
+
+<table>
+    <tr>
+        <td>Name:</td>
+        <td>
+            <div th:utext="${name}"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Place:</td>
+        <td>
+            <div th:utext="${place}"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>When:</td>
+        <td>
+            <div th:utext="${date}"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>Description:</td>
+        <td>
+            <div th:utext="${description}"></div>
+        </td>
+    </tr>
+
+</table>
+
+
+</body>
+
+</html>
