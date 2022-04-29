@@ -18,11 +18,9 @@ public class ResolveUrlTokenFilter extends TokenFilter {
     private final CharTermAttribute termAttribute = addAttribute(CharTermAttribute.class);
     private static final Pattern PATTERN_TO_MATCH_SHORTENED_URLS = Pattern.compile("https://bit.ly/\\w+");
     private final CloseableHttpClient client = HttpClientBuilder.create().disableRedirectHandling().build();
-
     protected ResolveUrlTokenFilter(TokenStream input) {
         super(input);
     }
-
     @Override
     public boolean incrementToken() throws IOException {
         if (!input.incrementToken()) {
@@ -36,27 +34,20 @@ public class ResolveUrlTokenFilter extends TokenFilter {
         }
         return true;
     }
-
     private String resolveShortenedUrl(String url) throws IOException {
-        HttpHead request = null;
-        try {
-            request = new HttpHead(url);
-            HttpResponse httpResponse = client.execute(request);
+        HttpHead request = new HttpHead(url);
+        HttpResponse httpResponse = client.execute(request);
 
-            int statusCode = httpResponse.getStatusLine().getStatusCode();
-            if (statusCode != 301 && statusCode != 302) {
-                return url;
-            }
-            Header[] headers = httpResponse.getHeaders(HttpHeaders.LOCATION);
-            Preconditions.checkState(headers.length == 1);
-            String newUrl = headers[0].getValue();
-            return newUrl;
-        } catch (IllegalArgumentException uriEx) {
+        int statusCode = httpResponse.getStatusLine().getStatusCode();
+        if (statusCode != 301 && statusCode != 302) {
             return url;
-        } finally {
-            if (request != null) {
-                request.releaseConnection();
-            }
         }
+        Header[] headers = httpResponse.getHeaders(HttpHeaders.LOCATION);
+        Preconditions.checkState(headers.length == 1);
+        String newUrl = headers[0].getValue();
+        if (request != null) {
+            request.releaseConnection();
+        }
+        return newUrl;
     }
 }
