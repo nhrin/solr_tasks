@@ -1,10 +1,12 @@
 package org.example.app.entity;
 
 import lombok.Data;
+import org.apache.solr.client.solrj.beans.Field;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name = "twits")
@@ -18,14 +20,18 @@ public class Twit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
-    private Long id;
+    @Field("id")
+    private String id;
 
     @Column(name = "user_name")
+    @Field("user_name")
     private String userName;
 
     @Column(name = "content")
+    @Field("content")
     private String content;
 
     @Column(name = "publication_date")
-    private Timestamp publicationDate;
+    @Field("publication_date")
+    private Date publicationDate;
 }

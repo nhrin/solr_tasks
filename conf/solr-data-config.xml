@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+<dataSource 
+  driver="org.postgresql.Driver" 
+  url="jdbc:postgresql://localhost:5432/postgres"
+  user="postgres" 
+  password="secret"/> 
+	<document> 
+		<entity name="twit" query="SELECT Id,user_name,content,publication_date FROM twits" deltaquery="SELECT Id FROM twits where publication_date >= '${dataimporter.last_index_time}'" deltaimportquery="SELECT Id,user_name,content,publication_date FROM twits where Id=${dataimporter.delta.Id}">
+			<field column="Id" name="Id"></field>
+			<field column="user_name" name="user_name"></field>
+			<field column="content" name="content"></field>
+			<field column="publication_date" name="publication_date"></field>   
+		</entity>
+	</document>
+</dataConfig>

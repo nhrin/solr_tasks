@@ -1,13 +1,14 @@
 package org.example.app.service;
 
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
+import org.example.app.config.TwitSolrClient;
 import org.example.app.entity.Twit;
 import org.example.app.repository.TwitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class TwitService {
 
     @Autowired
     private final TwitRepository twitRepository;
+
+    private final TwitSolrClient solrClient = new TwitSolrClient();
 
 
     public Page<Twit> findAll(Pageable pageable) {
@@ -40,8 +43,15 @@ public class TwitService {
         return bookPage;
     }
 
+    @SneakyThrows
     public void saveTwit(Twit twit) {
         twitRepository.save(twit);
+        solrClient.insertOneDoc(twit);
+    }
+
+    @SneakyThrows
+    public List<Twit> findTwitByContent(String query) {
+        return solrClient.findByContent(query);
     }
 
     public Optional<Twit> findById(int id) {

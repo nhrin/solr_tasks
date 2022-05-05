@@ -1,17 +1,15 @@
-package org.example.controller;
+package org.example.app.controller;
 
 import org.example.app.entity.Twit;
 import org.example.app.service.TwitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +60,22 @@ public class TwitController {
         return "saveTwit";
     }
 
+    @GetMapping("/searching-result")
+    public String getSearchedTwits(@RequestParam("query") String query, Model model) {
+        List<Twit> twits = twitService.findTwitByContent(query);
+        model.addAttribute("twits", twits);
+        return "listFoundTwits";
+    }
+
     @GetMapping("/new-twit")
     public String creatTwit(Model model) {
         model.addAttribute("twit", new Twit());
         return "newTwit";
+    }
+
+    @GetMapping("/search-page")
+    public String findTwitByContent(Model model) {
+       return "searchPage";
     }
 }
 
