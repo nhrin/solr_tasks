@@ -27,7 +27,7 @@ public class Twit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     @Field("id")
-    private String id;
+    private Integer id;
 
     @Column(name = "user_name")
     @Field("user_name")
