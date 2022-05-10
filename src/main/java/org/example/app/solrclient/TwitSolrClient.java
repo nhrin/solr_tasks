@@ -1,4 +1,4 @@
-package org.example.app.config;
+package org.example.app.solrclient;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -13,17 +13,17 @@ import java.util.List;
 
 public class TwitSolrClient {
     private final static String URL_SOLR = "http://localhost:8983/solr/twits";
-    private final static HttpSolrClient solrClient = new HttpSolrClient.Builder(URL_SOLR).build();
+    private final static HttpSolrClient SOLR_CLIENT = new HttpSolrClient.Builder(URL_SOLR).build();
 
-    public void insertOneDoc(Twit twit) throws SolrServerException, IOException {
-        solrClient.addBean(twit);
-        solrClient.commit();
+    public void addDoc(Twit twit) throws SolrServerException, IOException {
+        SOLR_CLIENT.addBean(twit);
+        SOLR_CLIENT.commit();
     }
 
     public List<Twit> findByContent(String userQuery) throws SolrServerException, IOException {
         String query = "content:" + userQuery;
         SolrQuery solrQuery = new SolrQuery(query);
-        QueryResponse queryResponse = solrClient.query(solrQuery);
+        QueryResponse queryResponse = SOLR_CLIENT.query(solrQuery);
         SolrDocumentList solrDocumentList = queryResponse.getResults();
         DocumentObjectBinder binder = new DocumentObjectBinder();
         return binder.getBeans(Twit.class, solrDocumentList);

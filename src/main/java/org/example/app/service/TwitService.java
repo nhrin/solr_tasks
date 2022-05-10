@@ -2,7 +2,7 @@ package org.example.app.service;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import org.example.app.config.TwitSolrClient;
+import org.example.app.solrclient.TwitSolrClient;
 import org.example.app.entity.Twit;
 import org.example.app.repository.TwitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class TwitService {
     @SneakyThrows
     public void saveTwit(Twit twit) {
         twitRepository.save(twit);
-        solrClient.insertOneDoc(twit);
+        solrClient.addDoc(twit);
     }
 
     @SneakyThrows
