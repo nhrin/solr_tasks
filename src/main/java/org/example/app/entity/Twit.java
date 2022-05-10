@@ -3,7 +3,13 @@ package org.example.app.entity;
 import lombok.Data;
 import org.apache.solr.client.solrj.beans.Field;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Date;

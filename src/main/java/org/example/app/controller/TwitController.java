@@ -30,7 +30,7 @@ public class TwitController {
     }
 
 
-    @GetMapping("/list-twits")
+    @GetMapping("/listTwits")
     public String listBooks(
             Model model,
             @RequestParam("page") Optional<Integer> page,
@@ -51,7 +51,7 @@ public class TwitController {
         }
         return "listTwits";
     }
-    @PostMapping("/save-twit")
+    @PostMapping("/saveTwit")
     public String saveTwit(Twit twit, Model model) {
         model.addAttribute("message", "Twit created by "
                 + twit.getUserName()
@@ -60,20 +60,20 @@ public class TwitController {
         return "saveTwit";
     }
 
-    @GetMapping("/searching-result")
+    @GetMapping("/searchingResult")
     public String getSearchedTwits(@RequestParam("query") String query, Model model) {
         List<Twit> twits = twitService.findTwitByContent(query);
         model.addAttribute("twits", twits);
         return "listFoundTwits";
     }
 
-    @GetMapping("/new-twit")
+    @GetMapping("/createTwit")
     public String creatTwit(Model model) {
         model.addAttribute("twit", new Twit());
         return "newTwit";
     }
 
-    @GetMapping("/search-page")
+    @GetMapping("/searchPage")
     public String findTwitByContent(Model model) {
        return "searchPage";
     }

@@ -6,7 +6,10 @@ import org.example.app.config.TwitSolrClient;
 import org.example.app.entity.Twit;
 import org.example.app.repository.TwitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -37,10 +40,9 @@ public class TwitService {
             list = twits.subList(startItem, toIndex);
         }
 
-        Page<Twit> bookPage
-                = new PageImpl<Twit>(list, PageRequest.of(currentPage, pageSize), twits.size());
+        Page<Twit> twitPage = new PageImpl<Twit>(list, PageRequest.of(currentPage, pageSize), twits.size());
 
-        return bookPage;
+        return twitPage;
     }
 
     @SneakyThrows
