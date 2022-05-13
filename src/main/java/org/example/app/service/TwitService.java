@@ -53,7 +53,7 @@ public class TwitService {
     }
 
     @SneakyThrows
-    public List<Twit> findTwitByContent(String query) {
+    public List<Twit> findDocsByContent(String query) {
         List<String> ids = solrClient.findListIdByContent(query);
         List<Twit> twits = ids.stream()
                 .map(id -> findById(id).get())

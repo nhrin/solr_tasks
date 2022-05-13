@@ -29,7 +29,6 @@ public class TwitController {
         return "welcomePage";
     }
 
-
     @GetMapping("/listTwits")
     public String listBooks(
             Model model,
@@ -62,7 +61,7 @@ public class TwitController {
 
     @GetMapping("/searchingResult")
     public String getSearchedTwits(@RequestParam("query") String query, Model model) {
-        List<Twit> twits = twitService.findTwitByContent(query);
+        List<Twit> twits = twitService.findDocsByContent(query);
         model.addAttribute("twits", twits);
         return "listFoundTwits";
     }
