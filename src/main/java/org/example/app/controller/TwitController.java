@@ -30,7 +30,7 @@ public class TwitController {
     }
 
     @GetMapping("/listTwits")
-    public String listBooks(
+    public String listTwits(
             Model model,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size) {
