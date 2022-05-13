@@ -27,7 +27,6 @@ public class TwitService {
 
     private final TwitSolrClient solrClient = new TwitSolrClient();
 
-
     public Page<Twit> findAll(Pageable pageable) {
         List<Twit> twits = twitRepository.findAll();
         int pageSize = pageable.getPageSize();
