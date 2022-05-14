@@ -25,7 +25,8 @@ public class TwitService {
     @Autowired
     private final TwitRepository twitRepository;
 
-    private final TwitSolrClient solrClient = new TwitSolrClient();
+    @Autowired
+    private final TwitSolrClient solrClient;
 
     public Page<Twit> findAll(Pageable pageable) {
         List<Twit> twits = twitRepository.findAll();

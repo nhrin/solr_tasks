@@ -67,7 +67,7 @@ public class TwitController {
     }
 
     @GetMapping("/createTwit")
-    public String creatTwit(Model model) {
+    public String createTwit(Model model) {
         model.addAttribute("twit", new Twit());
         return "newTwit";
     }
