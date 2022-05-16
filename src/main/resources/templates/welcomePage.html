@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:utext="${title}"></title>
+</head>
+
+<body>
+<th:block th:include="/_menu"></th:block>
+<h2><span th:utext="${message}"></span></h2>
+
+<ul>
+    <li><a th:href="@{/listTwits}">Show a list of all twits</a></li>
+    <li><a th:href="@{/createTwit}">Add new twit</a></li>
+    <li><a th:href="@{/searchPage}">Find content</a></li>
+</ul>
+</body>
+</html>

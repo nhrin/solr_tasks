@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Searching</title>
+</head>
+
+<body>
+<th:block th:include="/_menu"></th:block>
+
+<form name='f' action="#" th:action="@{/searchingResult(query=${query})}"  method="get">
+    <input name="query" placeholder="Type query...">
+    <button type="submit">Find</button>
+</form>
+</body>
+</html>

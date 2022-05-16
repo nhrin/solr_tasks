@@ -2,7 +2,7 @@
 <!-- Solr managed schema - automatically generated - DO NOT EDIT -->
 <schema name="default-config" version="1.6">
   <uniqueKey>id</uniqueKey>
-  <fieldType name="_nest_path_" class="solr.NestPathField" maxCharsForDocValues="-1" omitNorms="true" omitTermFreqAndPositions="true" stored="false" multiValued="false"/>
+  <fieldType name="_nest_path_" class="solr.NestPathField" omitTermFreqAndPositions="true" omitNorms="true" maxCharsForDocValues="-1" stored="false" multiValued="false"/>
   <fieldType name="ancestor_path" class="solr.TextField">
     <analyzer type="index">
       <tokenizer class="solr.KeywordTokenizerFactory"/>
@@ -447,25 +447,13 @@
       <tokenizer class="solr.WhitespaceTokenizerFactory"/>
     </analyzer>
   </fieldType>
-  <fieldType name="myURL" class="solr.TextField" positionIncrementGap="100">
-   <analyzer type="index">
-    <tokenizer class="solr.StandardTokenizerFactory"/>
-    <filter class="solr.LowerCaseFilterFactory"/>
-   </analyzer>
-    <analyzer type="query">
-    <tokenizer class="solr.KeywordTokenizerFactory"/>
-    <filter class="org.example.filters.ResolveUrlTokenFilterFactory"/>
-    </analyzer>
-  </fieldType>
   <field name="_nest_path_" type="_nest_path_"/>
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
-  <field name="directed_by" type="text_general"/>
-  <field name="genre" type="text_general"/>
-  <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
-  <field name="initial_release_date" type="pdate" stored="true"/>
-  <field name="name" type="text_general" multiValued="false" stored="true"/>
+  <field name="content" type="text_general" indexed="true" stored="false" multiValued="false"/>
+  <field name="id" type="string" multiValued="false" indexed="true" required="false" stored="true"/>
+  <field name="publication_date" type="pdate" uninvertible="true" indexed="true" stored="false"/>
   <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight" indexed="true" stored="true"/>
   <dynamicField name="*_descendent_path" type="descendent_path" indexed="true" stored="true"/>
   <dynamicField name="*_ancestor_path" type="ancestor_path" indexed="true" stored="true"/>
@@ -535,6 +523,4 @@
   <dynamicField name="*_f" type="pfloat" indexed="true" stored="true"/>
   <dynamicField name="*_d" type="pdouble" indexed="true" stored="true"/>
   <dynamicField name="*_p" type="location" indexed="true" stored="true"/>
-  <copyField source="directed_by" dest="directed_by_str" maxChars="256"/>
-  <copyField source="genre" dest="genre_str" maxChars="256"/>
 </schema>

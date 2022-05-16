@@ -1,0 +1,35 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Twits</title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+<table border="1">
+    <thead>
+    <tr>
+        <th>User name</th>
+        <th>Content</th>
+        <th>Publication date</th>
+    </tr>
+    <tbody>
+    <tr th:each="twit, iStat : ${twitPage.content}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td th:text="${twit.getUserName()}" />
+        <td th:text="${twit.getContent()}" />
+        <td th:text="${twit.getPublicationDate()}" />
+    </tr>
+    </tbody>
+</table>
+<div th:if="${twitPage.totalPages > 0}" class="pagination"
+     th:each="pageNumber : ${pageNumbers}">
+    <a th:href="@{/list-twits(size=${twitPage.size}, page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==twitPage.number + 1} ? active"></a>
+</div>
+</body>
+
+</html>

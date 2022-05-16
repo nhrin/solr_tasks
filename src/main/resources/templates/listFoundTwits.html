@@ -1,0 +1,31 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Twits</title>
+</head>
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>User name</th>
+        <th>Content</th>
+        <th>Publication date</th>
+    </tr>
+    <tbody>
+    <tr th:each="twit, iStat : ${twits}"
+        th:style="${iStat.odd}? 'font-weight: bold;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+        <td th:text="${twit.getId()}" />
+        <td th:text="${twit.getUserName()}" />
+        <td th:text="${twit.getContent()}" />
+        <td th:text="${twit.getPublicationDate()}" />
+    </tr>
+    </tbody>
+</table>
+</body>
+
+</html>
