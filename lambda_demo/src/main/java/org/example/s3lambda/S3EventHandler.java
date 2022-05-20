@@ -54,6 +54,7 @@ public class S3EventHandler implements RequestHandler<S3Event, String> {
                     .collect(Collectors.joining("\n"));
             log.info("File Contents : " + content);
             SOLR_CLIENT.addJsonDocToSolrIndex(SOLR_CLIENT.parseStringToJson(content));
+            log.info("New document added to solr.");
 
         } catch (IOException e) {
             e.printStackTrace();

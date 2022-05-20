@@ -7,7 +7,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -43,18 +42,23 @@ public class TwitSolrClient {
             solrClient.add(doc);
             solrClient.commit();
         } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("Solr error. Something went wrong.");
         }
 
     }
-    public JSONObject parseStringToJson (String stringToParse) {
+
+    public JSONObject parseStringToJson(String stringToParse) {
+
         JSONParser parser = new JSONParser();
         try {
-            return  (JSONObject) parser.parse(stringToParse);
+            return (JSONObject) parser.parse(stringToParse.replaceAll("[[\\W]&&[\\S]&&[^А-Яа-я-.?!{}\"\"\\n)(,:]]", ""));
         } catch (ParseException e) {
+            e.printStackTrace();
             throw new RuntimeException("Parsing error! Wrong document structure!");
         }
     }
+
     public boolean validateDocContent(JSONObject docContent) {
         List<String> keysForValidation = new ArrayList<>();
         keysForValidation.add("id");
