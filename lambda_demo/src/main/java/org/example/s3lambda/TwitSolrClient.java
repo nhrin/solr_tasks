@@ -45,11 +45,9 @@ public class TwitSolrClient {
             e.printStackTrace();
             throw new RuntimeException("Solr error. Something went wrong.");
         }
-
     }
 
     public JSONObject parseStringToJson(String stringToParse) {
-
         JSONParser parser = new JSONParser();
         try {
             return (JSONObject) parser.parse(stringToParse.replaceAll("[[\\W]&&[\\S]&&[^А-Яа-я-.?!{}\"\"\\n)(,:]]", ""));

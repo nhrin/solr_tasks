@@ -35,32 +35,32 @@ public class S3EventHandler implements RequestHandler<S3Event, String> {
 
     private final TwitSolrClient SOLR_CLIENT = new TwitSolrClient();
 
-    AmazonS3 s3client = AmazonS3ClientBuilder
+    private final AmazonS3 S3_CLIENT = AmazonS3ClientBuilder
             .standard()
             .withRegion(Regions.fromName(REGION))
             .withCredentials(new AWSStaticCredentialsProvider(AWS_CREDENTIALS))
             .build();
-    static final Logger log = LoggerFactory.getLogger(S3EventHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(S3EventHandler.class);
 
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
-        String BucketName = s3Event.getRecords().get(0).getS3().getBucket().getName();
-        String FileName = s3Event.getRecords().get(0).getS3().getObject().getKey();
-        log.info("File - " + FileName + " uploaded into " +
-                BucketName + " bucket at " + s3Event.getRecords().get(0).getEventTime());
-        try (InputStream s3ObjectInputStream = s3client.getObject(BucketName, FileName).getObjectContent()) {
+        String bucketName = s3Event.getRecords().get(0).getS3().getBucket().getName();
+        String fileName = s3Event.getRecords().get(0).getS3().getObject().getKey();
+        LOGGER.info("File - {} uploaded into {} bucket at {} ", fileName, bucketName,
+                s3Event.getRecords().get(0).getEventTime());
+        try (InputStream s3ObjectInputStream = S3_CLIENT.getObject(bucketName, fileName).getObjectContent()) {
             String content = new BufferedReader(new InputStreamReader(s3ObjectInputStream, StandardCharsets.UTF_8))
                     .lines()
                     .collect(Collectors.joining("\n"));
-            log.info("File Contents : " + content);
+            LOGGER.info("File content {} ", content);
             SOLR_CLIENT.addJsonDocToSolrIndex(SOLR_CLIENT.parseStringToJson(content));
-            log.info("New document added to solr.");
+            LOGGER.info("New document added to solr.");
 
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error reading contents of the file";
+            return "Error reading content of the file";
         }
-        return null;
+        return "Done!";
     }
 
     public Properties createProperties() {
