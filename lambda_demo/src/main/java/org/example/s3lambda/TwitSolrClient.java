@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -58,11 +58,7 @@ public class TwitSolrClient {
     }
 
     public boolean validateDocContent(JSONObject docContent) {
-        List<String> keysForValidation = new ArrayList<>();
-        keysForValidation.add("id");
-        keysForValidation.add("user_name");
-        keysForValidation.add("content");
-
+        List<String> keysForValidation = Arrays.asList("ad", "user_name", "content");
         for (String key : keysForValidation) {
             if (!docContent.containsKey(key)) {
                 return false;

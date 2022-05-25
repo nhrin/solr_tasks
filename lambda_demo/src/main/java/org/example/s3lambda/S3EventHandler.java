@@ -1,13 +1,12 @@
 package org.example.s3lambda;
 
-// To build: mvn clean compile assembly:single
-
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
+import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.slf4j.Logger;
@@ -44,8 +43,9 @@ public class S3EventHandler implements RequestHandler<S3Event, String> {
 
     @Override
     public String handleRequest(S3Event s3Event, Context context) {
-        String bucketName = s3Event.getRecords().get(0).getS3().getBucket().getName();
-        String fileName = s3Event.getRecords().get(0).getS3().getObject().getKey();
+        S3EventNotification.S3Entity s3Entity = s3Event.getRecords().get(0).getS3();
+        String bucketName = s3Entity.getBucket().getName();
+        String fileName = s3Entity.getObject().getKey();
         LOGGER.info("File - {} uploaded into {} bucket at {} ", fileName, bucketName,
                 s3Event.getRecords().get(0).getEventTime());
         try (InputStream s3ObjectInputStream = S3_CLIENT.getObject(bucketName, fileName).getObjectContent()) {
