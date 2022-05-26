@@ -18,6 +18,6 @@ public class PatientController {
     @ResponseBody
     @PostMapping("/deIdentification")
     public JSONObject deIdentificationPatientRecord (@RequestBody Patient patient) {
-        return deIdentificationPatientRecordService.deIdentificationAllInfo(patient);
+        return deIdentificationPatientRecordService.getDeIdentificationAllInfo(patient);
     }
 }
