@@ -1,12 +1,14 @@
 package nix.nhrin.apichallenge.service;
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import lombok.SneakyThrows;
 import nix.nhrin.apichallenge.entity.Patient;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashMap;
@@ -26,6 +28,18 @@ public class DeIdentificationPatientRecordService {
         put("\\s+(?:0[1-9]|1[012])[-/.](?:0[1-9]|[12][0-9]|3[01])[-/.](?:19\\d{2}|20\\d{2})\\b", 7); //MM/DD/YYYY
     }};
 
+    private final static Map<String, String> zipCodes = new HashMap<>();
+
+    static {
+        try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/population_by_zcta_2010.csv"))) {
+            String[] rowData;
+            while ((rowData = csvReader.readNext()) != null) {
+                zipCodes.put(rowData[0], rowData[1]);
+            }
+        } catch (CsvValidationException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public JSONObject getDeIdentificationAllInfo(Patient patient) {
         JSONObject jsonObjectPatientInfo = new JSONObject();
@@ -60,13 +74,10 @@ public class DeIdentificationPatientRecordService {
 
     @SneakyThrows
     public String getDeIdentificationZipCode(String zipCode) {
-        try (CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/population_by_zcta_2010.csv"))) {
-            String[] rowData;
-            while ((rowData = csvReader.readNext()) != null) {
-                if (rowData[0].equals(zipCode)) {
-                    if (Integer.parseInt(rowData[1]) < 20000) {
-                        return "00000";
-                    }
+        for (Map.Entry<String, String> rowData : zipCodes.entrySet()) {
+            if (rowData.getKey().equals(zipCode)) {
+                if (Integer.parseInt(rowData.getValue()) < 20000) {
+                    return "00000";
                 }
             }
         }
