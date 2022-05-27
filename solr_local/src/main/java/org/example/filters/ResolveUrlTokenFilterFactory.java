@@ -4,7 +4,6 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.util.TokenFilterFactory;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class ResolveUrlTokenFilterFactory extends TokenFilterFactory {
 
